@@ -6,7 +6,7 @@ RUN apt-get update && \
 
 RUN mkdir -p /etc/nginx/ssl
 
-COPY conf/nginx.conf /etc/nginx/
+COPY conf/nginx.conf /etc/nginx/nginx.conf
 
 COPY tools/entrypoint.sh /
 
@@ -14,4 +14,4 @@ RUN chmod +x /entrypoint.sh
 
 EXPOSE 443
 
-ENTRYPOINT ["sh", "/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]

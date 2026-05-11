@@ -9,4 +9,5 @@ if [ ! -f /etc/nginx/ssl/server.crt ] || [ ! -f /etc/nginx/ssl/server.key ]; the
     -subj "/C=US/ST=NA/L=NA/O=Local/OU=Dev/CN=localhost"
 fi
 
+nginx -t || exit 1
 exec nginx -g "daemon off;"

@@ -1,0 +1,23 @@
+services:
+  web:
+    build: ./requirements/nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    restart: unless-stopped
+    volumes:
+      - ./requirements/nginx/ssl:/etc/nginx/ssl
+    networks:
+      - inception
+  database:
+    build: requirements/mariadb
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    volumes:
+      - ./requirements/mariadb/data:/var/lib/mysql
+    networks:
+      - inception
+networks:
+  inception:
