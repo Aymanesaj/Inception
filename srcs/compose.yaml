@@ -1,5 +1,5 @@
 services:
-  web:
+  nginx:
     build: ./requirements/nginx
     container_name: nginx
     ports:
@@ -11,11 +11,12 @@ services:
       - ./requirements/nginx/ssl:/etc/nginx/ssl
       - wordpress_data:/var/www/html
     depends_on:
-      - wordpress
+      wordpress:
+        condition: service_healthy
     networks:
       - inception
 
-  database:
+  mariadb:
     build: ./requirements/mariadb
     container_name: mariadb
     env_file:
@@ -25,6 +26,12 @@ services:
       - mariadb_data:/var/lib/mysql
     networks:
       - inception
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
 
   wordpress:
     build: ./requirements/wordpress
@@ -33,11 +40,18 @@ services:
       - .env
     restart: always
     depends_on:
-      - database
+      mariadb:
+        condition: service_healthy
     volumes:
       - wordpress_data:/var/www/html
     networks:
       - inception
+    healthcheck:
+      test: ["CMD-SHELL", "pidof php-fpm || pidof php-fpm7.4 || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 2
+      start_period: 30s
 
 networks:
   inception:

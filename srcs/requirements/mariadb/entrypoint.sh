@@ -6,7 +6,7 @@ mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
 chown -R mysql:mysql /var/lib/mysql
 
-if [ ! -d "/var/lib/mysql/mysql" ]; then
+if ! mariadb -u root -p"$MYSQL_ROOT_PASSWORD" -e "SELECT 1 FROM mysql.user WHERE User='${MYSQL_USER}'" >/dev/null 2>&1; then
     echo "Initializing MariaDB..."
 
     mariadb-install-db --user=mysql --datadir=/var/lib/mysql

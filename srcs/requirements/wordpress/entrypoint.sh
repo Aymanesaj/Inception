@@ -9,11 +9,6 @@ mkdir -p /var/www/html
 
 chown -R www-data:www-data /var/www/html
 
-until mysqladmin ping -h"${WORDPRESS_DB_HOST}" -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" --silent; do
-    echo "Waiting for MariaDB..."
-    sleep 2
-done
-
 if [ ! -f /var/www/html/.wp_installed ]; then
     echo "Setting up WordPress..."
 
