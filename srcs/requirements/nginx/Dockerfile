@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM debian:bookworm
 
 RUN apt-get update && \
     apt-get install -y nginx openssl && \

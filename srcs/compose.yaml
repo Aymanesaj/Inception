@@ -4,20 +4,45 @@ services:
     container_name: nginx
     ports:
       - "443:443"
-    restart: unless-stopped
+    restart: always
+    env_file:
+      - .env
     volumes:
       - ./requirements/nginx/ssl:/etc/nginx/ssl
+      - wordpress_data:/var/www/html
+    depends_on:
+      - wordpress
     networks:
       - inception
+
   database:
-    build: requirements/mariadb
+    build: ./requirements/mariadb
     container_name: mariadb
-    ports:
-      - "3306:3306"
-    restart: unless-stopped
+    env_file:
+      - .env
+    restart: always
     volumes:
-      - ./requirements/mariadb/data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     networks:
       - inception
+
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - database
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception
+
 networks:
   inception:
+    driver: bridge
+
+volumes:
+  wordpress_data:
+  mariadb_data:

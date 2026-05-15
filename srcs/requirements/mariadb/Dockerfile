@@ -1,14 +1,14 @@
-FROM debian:stable-slim
+FROM debian:bullseye
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-	mariadb-server mariadb-client \
-	&& rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    mariadb-server \
+    mariadb-client \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY entrypoint.sh /
+COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 3306
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT ["/entrypoint.sh"]
