@@ -6,9 +6,9 @@ RUN apt-get update && \
 
 RUN mkdir -p /etc/nginx/ssl
 
-COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY tools/entrypoint.sh /
+COPY entrypoint.sh /
 
 RUN chmod +x /entrypoint.sh
 
