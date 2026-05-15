@@ -9,7 +9,7 @@ services:
       - .env
     volumes:
       - ./requirements/nginx/ssl:/etc/nginx/ssl
-      - wordpress_data:/var/www/html
+      - wordpress_data:/var/www/html:ro
     depends_on:
       wordpress:
         condition: service_healthy
@@ -47,7 +47,7 @@ services:
     networks:
       - inception
     healthcheck:
-      test: ["CMD-SHELL", "pidof php-fpm || pidof php-fpm7.4 || exit 1"]
+      test: ["CMD-SHELL", "pidof php-fpm7.4 || exit 1"]
       interval: 10s
       timeout: 3s
       retries: 2
@@ -59,4 +59,14 @@ networks:
 
 volumes:
   wordpress_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/asajed/data/wp'
   mariadb_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/asajed/data/db'

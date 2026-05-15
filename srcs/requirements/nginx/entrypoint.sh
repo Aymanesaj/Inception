@@ -6,7 +6,7 @@ if [ ! -f /etc/nginx/ssl/server.crt ] || [ ! -f /etc/nginx/ssl/server.key ]; the
     -newkey rsa:2048 \
     -keyout /etc/nginx/ssl/server.key \
     -out /etc/nginx/ssl/server.crt \
-    -subj "/C=US/ST=NA/L=NA/O=Local/OU=Dev/CN=localhost"
+    -subj "/C=US/ST=NA/L=NA/O=Local/OU=Dev/CN=${DOMAIN_NAME}"
 fi
 
 nginx -t || exit 1
