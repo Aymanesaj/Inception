@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    php7.4-fpm php-mysql php-mbstring curl \
+    php7.4-fpm php-mysql php-redis php-mbstring curl \
 	php-zip php-curl php-xml php-gd ca-certificates && \
     rm -rf /var/lib/apt/lists/*
 
