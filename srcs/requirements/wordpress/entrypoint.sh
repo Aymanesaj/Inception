@@ -4,7 +4,7 @@ set -e
 
 WP_PATH="/var/www/html"
 
-sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php/7.4/fpm/pool.d/www.conf
+sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php/8.2/fpm/pool.d/www.conf
 
 mkdir -p /run/php
 mkdir -p "$WP_PATH"
@@ -84,4 +84,4 @@ chown -R www-data:www-data "$WP_PATH"
 
 echo "WordPress initialization complete."
 
-exec php-fpm7.4 -F
+exec php-fpm8.2 -F

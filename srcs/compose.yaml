@@ -4,6 +4,7 @@ services:
     container_name: nginx
     ports:
       - "443:443"
+      - "80:80"
     restart: always
     env_file:
       - .env
@@ -48,7 +49,7 @@ services:
     networks:
       - inception
     healthcheck:
-      test: ["CMD-SHELL", "pidof php-fpm7.4 || exit 1"]
+      test: ["CMD-SHELL", "pidof php-fpm8.2 || exit 1"]
       interval: 10s
       timeout: 3s
       retries: 2
