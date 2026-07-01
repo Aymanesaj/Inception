@@ -63,24 +63,29 @@ fi
 
 if ! wp config has WP_REDIS_HOST --path="$WP_PATH" --allow-root >/dev/null 2>&1; then
     echo "Configuring Redis..."
-    wp config set WP_REDIS_HOST redis \
+    wp config set WP_REDIS_HOST "$REDIS_HOST" \
         --path="$WP_PATH" \
         --allow-root
+fi
 
-    wp config set WP_REDIS_PORT 6379 \
+if ! wp config has WP_REDIS_PORT --path="$WP_PATH" --allow-root >/dev/null 2>&1; then
+    wp config set WP_REDIS_PORT "$REDIS_PORT" \
         --raw \
         --path="$WP_PATH" \
         --allow-root
 fi
 
-if ! wp redis status --path="$WP_PATH" --allow-root >/dev/null 2>&1; then
+echo "Waiting for Redis..."
+until redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" ping | grep -q PONG; do
+    sleep 2
+done
+
+if [ ! -f "$WP_PATH/wp-content/object-cache.php" ]; then
     echo "Enabling Redis object cache..."
     wp redis enable \
         --path="$WP_PATH" \
         --allow-root
 fi
-
-chown -R www-data:www-data "$WP_PATH"
 
 echo "WordPress initialization complete."
 
